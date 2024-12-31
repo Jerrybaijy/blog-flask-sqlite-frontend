@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+  <nav>
+    <a href="{{ url_for('main.home') }}">首页</a>
+    {% if current_user.is_anonymous %}
+      <a href="{{ url_for('auth.login') }}">登录</a>
+      <a href="{{ url_for('auth.register') }}">注册</a>
+    {% else %}
+      <span>欢迎, {{ current_user.username }}</span>
+      <a href="{{ url_for('auth.logout') }}">退出</a>
+    {% endif %}
+  </nav>
+  
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+        <div class="flash">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+  
+  {% block content %}{% endblock %}
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>
